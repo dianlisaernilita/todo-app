@@ -1,0 +1,127 @@
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4a90e2, #ff6ec7);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .todo-container {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      width: 350px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #4a90e2;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .input-area button {
+      background: #ff6ec7;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #f0f4ff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    li.done {
+      text-decoration: line-through;
+      color: gray;
+      background: #ffe6f4;
+    }
+
+    .delete {
+      background: none;
+      border: none;
+      color: red;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="todo-container">
+    <h1>Todo List</h1>
+    <div class="input-area">
+      <input type="text" id="todo-input" placeholder="Tambah todo...">
+      <button onclick="addTodo()">Tambah</button>
+    </div>
+    <ul id="todo-list"></ul>
+  </div>
+
+  <script>
+    const input = document.getElementById("todo-input");
+    const list = document.getElementById("todo-list");
+
+    function addTodo() {
+      if (input.value.trim() === "") return;
+
+      const li = document.createElement("li");
+      li.textContent = input.value;
+
+      // toggle selesai
+      li.addEventListener("click", () => {
+        li.classList.toggle("done");
+      });
+
+      // tombol hapus
+      const del = document.createElement("button");
+      del.textContent = "✕";
+      del.className = "delete";
+      del.onclick = (e) => {
+        e.stopPropagation();
+        li.remove();
+      };
+
+      li.appendChild(del);
+      list.appendChild(li);
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
+
+  </script>
+</body>
+</html>
