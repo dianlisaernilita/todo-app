@@ -1,4 +1,4 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -94,34 +94,56 @@
     const input = document.getElementById("todo-input");
     const list = document.getElementById("todo-list");
 
+    // Ambil data dari localStorage
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    // Render ulang semua todo
+    function renderTodos() {
+      list.innerHTML = "";
+      todos.forEach((todo, index) => {
+        const li = document.createElement("li");
+        li.textContent = todo.text;
+        if (todo.done) li.classList.add("done");
+
+        // toggle selesai
+        li.addEventListener("click", () => {
+          todos[index].done = !todos[index].done;
+          saveTodos();
+          renderTodos();
+        });
+
+        // tombol hapus
+        const del = document.createElement("button");
+        del.textContent = "✕";
+        del.className = "delete";
+        del.onclick = (e) => {
+          e.stopPropagation();
+          todos.splice(index, 1);
+          saveTodos();
+          renderTodos();
+        };
+
+        li.appendChild(del);
+        list.appendChild(li);
+      });
+    }
+
+    // Simpan ke localStorage
+    function saveTodos() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+    // Tambah todo
     function addTodo() {
       if (input.value.trim() === "") return;
-
-      const li = document.createElement("li");
-      li.textContent = input.value;
-
-      // toggle selesai
-      li.addEventListener("click", () => {
-        li.classList.toggle("done");
-      });
-
-      // tombol hapus
-      const del = document.createElement("button");
-      del.textContent = "✕";
-      del.className = "delete";
-      del.onclick = (e) => {
-        e.stopPropagation();
-        li.remove();
-      };
-
-      li.appendChild(del);
-      list.appendChild(li);
+      todos.push({ text: input.value, done: false });
+      saveTodos();
+      renderTodos();
       input.value = "";
     }
-  </script>
-</body>
-</html>
 
+    // pertama kali load
+    renderTodos();
   </script>
 </body>
 </html>
